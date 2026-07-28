@@ -77,9 +77,9 @@ AI-Negotiation-Agents/
 ## Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/AI-Negotiation-Agents.git
+git clone https://github.com/the-sadanand/ai-negotiation-agents
 
-cd AI-Negotiation-Agents
+cd ai-negotiation-agents
 ```
 
 ---
