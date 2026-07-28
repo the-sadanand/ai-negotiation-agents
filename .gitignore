@@ -1,0 +1,33 @@
+# Python bytecode files — generated automatically, never commit these
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment folders — each developer creates their own
+venv/
+.venv/
+env/
+
+# IDE settings — personal to each developer
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files — may contain secrets, never commit
+.env
+
+# OS-generated files — useless clutter
+.DS_Store
+Thumbs.db
+
+# Negotiation log — generated at runtime, not source code
+negotiation_log.json
+
+# Pytest cache
+.pytest_cache/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
