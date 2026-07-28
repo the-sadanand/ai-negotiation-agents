@@ -1,0 +1,24 @@
+# Python cache — never include in Docker images
+__pycache__
+*.pyc
+
+# Virtual environments — not needed in containers
+.venv
+venv
+
+# Git files — not needed in running containers
+.git
+.gitignore
+
+# Env files — secrets should not be baked into images
+.env
+
+# Docker Compose — not needed inside the container
+docker-compose.yml
+
+# Runtime log files — generated at runtime, not build time
+negotiation_log.json
+
+# IDE files — developer-specific
+.vscode
+.idea
