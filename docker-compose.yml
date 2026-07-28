@@ -1,38 +1,40 @@
-# Docker Compose config — orchestrates the full system
-version: '3.8'
 
 services:
 
-  # Ollama LLM service — runs the Llama 3 model locally
   ollama:
-    image: ollama/ollama          # Official Ollama image
+    image: ollama/ollama
     ports:
-      - "11434:11434"             # Ollama API port
+      - "11434:11434"
     volumes:
-      - ollama_data:/root/.ollama # Persist downloaded models
-    hostname: ollama              # Other containers reach it as 'ollama'
+      - ollama_data:/root/.ollama
+    hostname: ollama
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:11434/api/tags || exit 1"]
+      # USE "ollama list" — it's the ONLY reliable healthcheck for this image
+      # It connects to the Ollama server internally, no external tools needed
+      test: ["CMD", "ollama", "list"]
+      # Check every 10 seconds
       interval: 10s
+      # Allow 5 seconds for the command to complete
       timeout: 5s
-      retries: 5
-      start_period: 15s
+      # Allow 10 failures before marking unhealthy (gives Ollama time to boot)
+      retries: 10
+      # Ignore failures for the first 30 seconds (Ollama needs time to initialize)
+      start_period: 30s
 
-  # FastAPI backend — our negotiation API
   api:
     build:
-      context: .                  # Build from project root
-      dockerfile: Dockerfile      # Using our Dockerfile
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8000:8000"               # API accessible on port 8000
+      - "8000:8000"
     depends_on:
       ollama:
-        condition: service_healthy # Wait for Ollama to be ready
+        condition: service_healthy
     volumes:
-      - ./data:/app/data          # Mount data/ for trade_positions.json
+      - ./data:/app/data
     environment:
-      - OLLAMA_BASE_URL=http://ollama:11434  # Tell API where Ollama is
+      - OLLAMA_BASE_URL=http://ollama:11434
     restart: unless-stopped
 
 volumes:
-  ollama_data:                    # Named volume for model persistence
+  ollama_data:
